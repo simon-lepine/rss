@@ -563,12 +563,6 @@ $tmp[ '53ced5cab0d7ea6cae1a62cb40264552' ] = array (
 	//todo more data here
 );
 
-$tmp[ '2843174b7bf56d85b800cfa75782529d' ] = array (
-	'url' => 'http://feeds.feedburner.com/infosecResources', 
-	'date_added' => '', 
-	//todo more data here
-);
-
 $tmp[ 'fe1464f2da6b355308476454ce27c149' ] = array (
 	'url' => 'http://www.social-engineer.org/feed/', 
 	'date_added' => '', 
@@ -1133,6 +1127,13 @@ $tmp[ 'de4aa415c55f5fb000a7780ecc463f90' ] = array (
 	'date_added' => '', 
 	//todo more data here
 );
+
+$tmp[ '2843174b7bf56d85b800cfa75782529d' ] = array (
+	'url' => 'http://feeds.feedburner.com/infosecResources', 
+	'date_added' => '', 
+	//todo more data here
+);
+
 
 /**
  * build return
