@@ -89,6 +89,10 @@ if (
 	(!$_SERVER['class']['jwt'] = new jwt)
 	||
 	(!$_SERVER['class']['microservices'] = new microservices)
+	||
+	(!$_SERVER['class']['db'] = new db)
+	||
+	(!$_SERVER['class']['blog_feed'] = new blog_feed)
 ){
 	$tmp = basename(__FILE__) . ':' . __LINE__;
 	error_log("[ LAKEBED ][ {$tmp} ] Failed to init classes.");
@@ -430,12 +434,17 @@ $_POST['cols'] = $_SERVER['class']['san']->db_val($_POST['cols']);//todo all ['c
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
+/**
+ * parse feed entires
+ */
+$tmp = $_SERVER['class']['blog_feed']->parse($_POST['feed_url']);
 
+//$tmp = $_SERVER['class']['db']->query('SELECT * FROM `20220728lakebed_app`.`users`');
 
 /**
  * build return
  */
-$_SERVER['return']['result'] = array();
+$_SERVER['return']['result'] = $tmp;
 $_SERVER['return']['success'] = 1;
 $_SERVER['class']['output']->send();
 
