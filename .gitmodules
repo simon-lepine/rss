@@ -1,0 +1,3 @@
+[submodule "forbidden_dir/classes"]
+	path = forbidden_dir/classes
+	url = git@ssh.dev.azure.com:v3/Simon-Le-Pine/classes/classes

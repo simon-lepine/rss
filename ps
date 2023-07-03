@@ -1,0 +1,223 @@
+
+#get current dir
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )";
+
+#get enviro vars
+if [ ! -f "server_scripts.ini" ]; then
+    echo "server_scripts.ini does not exist so we cannot proceed :(";
+    exit 0;
+fi
+source server_scripts.ini
+
+#maybe make dump optional?
+#mysqldump -u root -pRT..lakebed.io --all-databases --no-data > ~/public_html/lakebed/sql_struct/data.sql;
+#echo "Backed up SQL data.";
+
+#git add all 
+git -C $current_dir add -A
+
+#specifically git for add _common files
+
+###################################
+
+#//debug //leftoff these are probably a mistake to add "blanket"
+#git add -f *.test.php
+#git add -f *.php
+#git add -f *.sh
+#git add -f *.desktop
+#git add -f **/*.desktop
+#git add -f **/scheduled_jobs/*
+
+###################################
+
+
+###################################
+
+# specific to node projects
+
+###################################
+if [[ -d src/classes/db.sqlite ]]; then
+	git add -f **/classes/db.sqlite/*
+fi
+
+
+
+###################################
+
+# specific to /shared_code/
+
+###################################
+if [[ "${current_dir}/" == *"/shared_code/"* ]]; then
+	git add -f server_scripts.ini;
+	git add -f ps
+	git add -f ps-all.sh
+	git add -f pl
+	git add -f pl-all.sh
+	git add -f run_all_*
+	git add -f *.sh
+	git add -f .gitignore
+	git add -f gitignore
+	git add -f react_common
+	git add -f **/react_common/*
+	git add -f react_app
+	git add -f **/react_app/*
+	git add -f public_html
+	git add -f **/public_html/*
+	git add -f **/classes/db.sqlite/*
+fi
+
+
+#############
+# all projects/Git
+#############
+git add -f **/index.php
+git add -f **/file_head.inc.php
+if [ -f "file_head.inc.php" ]; then
+	git add -f "file_head.inc.php"
+fi
+
+
+if [ -f "base.inc.php" ]; then
+	git add -f base.inc.php
+fi
+if [ -f "general.inc.php" ]; then
+	git add -f general.inc.php
+	git add -f dev_log.inc.php
+fi
+if [ -f "constants.inc.php" ]; then
+	git add -f constants.inc.php
+fi
+if [ -f "html.inc.php" ]; then
+	git add -f html.inc.php
+fi
+if [ -f "error/index.php" ]; then
+	git add -f "error/*.php"
+fi
+if [ -f "singleton.php" ]; then
+	git add -f "singleton.php"
+	git add -f "db.php"
+	git add -f "jwt.php"
+	git add -f "validate.php"
+	git add -f "sanitize.php"
+	git add -f "security.php"
+fi
+
+
+#############
+#lakebed specific
+#############
+if [ -f "install/index.php" ]; then
+	git add -f "install/*.php"
+fi
+if [ -f "content.inc.php" ]; then
+	git add -f content.inc.php
+fi
+if [ -f "lakebed.inc.php" ]; then
+	git add -f lakebed.inc.php
+fi
+
+#############
+#dev_tools files
+#############
+if [ -f "update_git_pl_ps.php" ]; then
+	git add -f "update_git_pl_ps.php"
+	git add -f "specific_hiring_cat/*"
+	git add -f "specific_iic/*"
+	git add -f "specific_its/*"
+	git add -f "specific_lakebed/*"
+	git add -f "code_search.php"
+	git add -f "admin_class.inc.php"
+	git add -f "ignored.class.php"
+	git add -f "snippets.php"
+	git add -f "snippets/**"
+fi
+
+
+git add -f apply/src/App/*
+git add -f account/src/App/*
+git add -f error/src/App/*
+git add -f edit/src/App/*
+git add -f candidates/src/App/*
+git add -f changelog/src/App/*
+git add -f list_posts/src/App/*
+git add -f login/src/App/*
+git add -f teams/src/App/*
+git add -f settings/src/App/*
+git add -f jobs/src/App/*
+git add -f notifications/src/App/*
+git add -f template/src/App/*
+
+git add -f create_production_release.php
+git add -f under_construction.php
+git add -f PRODUCTION-index.php
+git add -f PRODUCTION-.htaccess
+
+git add -f apply/.htaccess
+git add -f login/logout.php
+git add -f assets/*
+git add -f API/*
+git add -f **/API/*
+git add -f **/changelog/*
+
+
+
+#############
+#Hiring Cat specific
+#############
+git add -f */language_tools.hiring.cat
+if [ -f "robots.txt" ]; then
+	git add -f robots.txt
+fi
+
+#remove certain unwanted files
+git rm --cached *.mp4
+git rm --cached **/*.mp4
+
+#copy .htaccess if it exists
+if [ -f ".htaccess-BACKUP" ]; then
+	cp .htaccess-BACKUP .htaccess
+fi
+
+#get current task
+commit_message='';
+if [ -f "current_task.txt" ]; then
+	read -r commit_message < current_task.txt;
+fi
+
+echo "";
+echo "";
+echo "Git message/test:";
+echo $commit_mes;
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+echo "Add additional commit message:";
+
+#get user commit message
+user_mes=$1;
+if [ -z "$1" ] 
+then
+	read user_mes;
+fi
+
+#wipe changelog file so its always the same format
+if [ -z "$changelog_file" ] 
+then
+	changelog_file='/tmp/';
+fi
+#tmp=$(date '+%Y-%m-%d %H:%M:%S'); 
+#echo "$tmp" > "${changelog_file}git-entry.txt";
+
+#git commit
+git -C $current_dir commit -m "${commit_message} -> ${user_mes}" >> "${changelog_file}git-entry.txt";
+echo "Git committed as: $commit_mes";
+echo "";
+echo "";
+
+
+git -C $current_dir push;
+
+#Output success
+echo "Done Pushing Git for ${current_dir}!";
+echo "";
+echo "";
+
+exit 0;
