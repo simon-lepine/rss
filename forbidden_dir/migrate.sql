@@ -25,7 +25,7 @@ ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `date_updated` TIMESTA
 ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `timestamp_published` varchar(256) NULL;
 ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `timestamp_read` varchar(256) NULL;
 ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `date_published` varchar(256) NULL;
-ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `description` varchar(256) NULL;
+ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `description` longtext NULL;
 ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `content` longtext NULL;
 ALTER TABLE `rss`.`feed_entries` ADD COLUMN IF NOT EXISTS `unique_hash` varchar(256) NOT NULL;
 

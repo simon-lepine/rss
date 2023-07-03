@@ -191,7 +191,7 @@ if (!$_SERVER['class']['csrf']->compare($_POST['csrf'])){
  */
 if (!$tmp = $_SERVER['class']['csrf']->check_post(
 	$_POST,
-	array('security_token', 'user_id', 'feed_url'), 
+	array('security_token', 'user_id'), 
 	array()
 )){
 	$_SERVER['class']['log']->add->entry(array(
@@ -435,16 +435,38 @@ $_POST['cols'] = $_SERVER['class']['san']->db_val($_POST['cols']);//todo all ['c
  */
 
 /**
+ * get user feeds
+ */
+$user_feeds = $_SERVER['class']['microservices']->call(array(
+	'user_id' => '//debug', 
+	'url' => 'read/user_feeds.php', 
+));
+if (
+	(empty($user_feeds))
+	||
+	(empty($user_feeds['success']))
+	||
+	(!is_array($user_feeds['result']))
+){
+	echo 'Failed to get user feeds.';
+	die;
+}
+$user_feeds = $user_feeds['result'];
+
+$_SERVER['class']['blog_feed']->user_id = '//debug';
+
+/**
  * parse feed entires
  */
-$tmp = $_SERVER['class']['blog_feed']->parse($_POST['feed_url']);
-
-//$tmp = $_SERVER['class']['db']->query('SELECT * FROM `20220728lakebed_app`.`users`');
+foreach ($user_feeds AS $feed){
+	$_SERVER['class']['blog_feed']->feed_url = $feed['url'];
+	$_SERVER['class']['blog_feed']->parse($feed['url']);
+};
 
 /**
  * build return
  */
-$_SERVER['return']['result'] = $tmp;
+$_SERVER['return']['result'] = $_SERVER['class']['blog_feed']->posts;
 $_SERVER['return']['success'] = 1;
 $_SERVER['class']['output']->send();
 
