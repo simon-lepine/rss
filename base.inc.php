@@ -236,7 +236,7 @@ if (file_exists("{$_SERVER['class']['constants']->docroot}/general.inc.php")){
 
 //live copy/paste from err.inc.php
 if (file_exists("{$_SERVER['class']['constants']->docroot}/error.inc.php")){
-	//debug include_once("{$_SERVER['class']['constants']->docroot}/error.inc.php");
+	include_once("{$_SERVER['class']['constants']->docroot}/error.inc.php");
 }
 if (file_exists("{$_SERVER['class']['constants']->docroot}/output.inc.php")){
 	include_once("{$_SERVER['class']['constants']->docroot}/output.inc.php");
@@ -247,12 +247,13 @@ if (file_exists("{$_SERVER['class']['constants']->docroot}/output.inc.php")){
  * HEADER CODE BLOCK
  * include/set log class
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * //future remove references to log everywhere and namespace at the top of this file
+ */
 
 //live copy/paste from check_input_function.inc.php
 if (file_exists("{$_SERVER['class']['constants']->forbidden_dir}/simon_lepines_log/master.class.php")){
 	include_once("{$_SERVER['class']['constants']->forbidden_dir}/simon_lepines_log/master.class.php");
 	$_SERVER['class']['log'] = new \simon_lepines_log\master;
+	$_SERVER['class']['log']->init();
 }
 
 /*
